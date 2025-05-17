@@ -1,0 +1,67 @@
+networks:
+  subtitles:
+
+volumes:
+  postgres_volume:
+    driver: local
+
+services:
+  php:
+    container_name: subtitles-php
+    entrypoint: /entrypoint.sh
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: ./.docker/php/dockerfile.local
+    volumes:
+      - "${HOME}/.cache:/home/docker/.cache"
+      - "${HOME}/.composer:/home/docker/.composer"
+      - "${HOME}/.npm:/home/docker/.npm"
+      - ./.docker/php/entrypoint.local.sh:/entrypoint.sh
+      - ./.:/app
+    depends_on:
+      - postgres
+    expose:
+      - 9000
+      - 9009
+    networks:
+      - subtitles
+
+  nginx:
+    container_name: subtitles-nginx
+    build:
+      context: ./
+      dockerfile: ./.docker/nginx/dockerfile
+      args:
+        - SITE_HOST
+    volumes:
+      - "${HOME}/.cache:/home/docker/.cache"
+      - "${HOME}/.composer:/home/docker/.composer"
+      - "${HOME}/.npm:/home/docker/.npm"
+      - ./.:/app
+    depends_on:
+      - php
+    expose:
+      - 80
+    networks:
+      - subtitles
+
+  postgres:
+    container_name: subtitles-postgres
+    env_file:
+      - .env
+    build:
+      context: ./
+      dockerfile: ./.docker/postgres/dockerfile
+    volumes:
+      - "${HOME}/.cache:/home/docker/.cache"
+      - "${HOME}/.composer:/home/docker/.composer"
+      - "${HOME}/.npm:/home/docker/.npm"
+      - postgres_volume:/var/lib/pgsql
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    networks:
+      - subtitles
