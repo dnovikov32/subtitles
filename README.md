@@ -33,10 +33,11 @@ make start
 After start, application is available at http://subtitles.docker/
 
 
-## Make new Laravel project
+## Laravel CLI
 ```bash 
 docker exec -it subtitles-php bash
-php ~/.composer/vendor/laravel/installer/bin/laravel
+composer global require laravel/installer
+php ~/.composer/vendor/laravel/installer/bin/laravel new app
 ```
 
 

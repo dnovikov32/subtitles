@@ -6,6 +6,6 @@ set -eo pipefail
 #/app/bin/console cache:clear --no-warmup
 #/app/bin/console cache:warmup
 
-# composer install --no-interaction --no-scripts --no-progress
+composer install --no-interaction --no-scripts --no-progress
 
 php-fpm -F -O
