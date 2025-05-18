@@ -67,3 +67,18 @@ services:
       - "5432:5432"
     networks:
       - subtitles
+
+  node:
+    container_name: subtitles-node
+    image: subtitles-node
+    entrypoint: /entrypoint.sh
+    build:
+      context: ./
+      dockerfile: ./.docker/node/Dockerfile
+    volumes:
+      - "${HOME}/.cache:/home/docker/.cache"
+      - "${HOME}/.npm:/home/docker/.npm"
+      - ./.docker/node/entrypoint.sh:/entrypoint.sh
+      - ./.:/app
+    networks:
+      - subtitles
