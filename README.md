@@ -32,6 +32,18 @@ make start
 
 After start, application is available at http://subtitles.test/
 
+## First start
+Install composer dependencies:
+```bash
+docker exec -it subtitles-php composer install
+```
+
+Install composer dependencies:
+```bash
+docker exec -it subtitles-php php artisan migrate
+```
+
+npm install
 
 ## Laravel CLI
 ```bash 
