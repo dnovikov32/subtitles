@@ -13,14 +13,15 @@ start: ## Start application
 .PHONY: build
 build: ## Build application
 	@echo -e "\033[33mstart\033[0m"
-	@docker build .docker/php -f .docker/php/dockerfile --tag subtitles-php-base
+	@docker build .docker/php -f .docker/php/Dockerfile --tag subtitles-php-base
 
 	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose --file docker-compose.yml build
 
 .PHONY: rebuild
-rebuild: ## Build application from scratch, without cache etc.
-	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose --file docker-compose.yml rm -sf && \
-	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose --file docker-compose.yml build --pull --no-cache && \
+rebuild: ## Rebuild application
+	@echo -e "\033[33mrebuild\033[0m"
+	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose --file docker-compose.yml rm -sf
+	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose --file docker-compose.yml build --pull --no-cache
 	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose --file docker-compose.yml up --force-recreate
 
 .PHONY: clean

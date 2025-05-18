@@ -32,7 +32,7 @@ services:
     container_name: subtitles-nginx
     build:
       context: ./
-      dockerfile: ./.docker/nginx/dockerfile
+      dockerfile: ./.docker/nginx/Dockerfile
       args:
         - SITE_HOST
     volumes:
@@ -44,6 +44,8 @@ services:
       - php
     expose:
       - 80
+    ports:
+      - "80:80"
     networks:
       - subtitles
 
@@ -53,7 +55,7 @@ services:
       - .env
     build:
       context: ./
-      dockerfile: ./.docker/postgres/dockerfile
+      dockerfile: ./.docker/postgres/Dockerfile
     volumes:
       - "${HOME}/.cache:/home/docker/.cache"
       - "${HOME}/.composer:/home/docker/.composer"
