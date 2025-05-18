@@ -36,6 +36,10 @@ clean: ## Clean containers and application cache
 	@rm -rf "./var/log"
 	@rm -rf "./var/sessions"
 
+.PHONY: shell
+shell: ## Runs php container shell
+	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose exec php bash
+
 .PHONY: test
 test: ## Runs all tests
 	@USERID=$$(id -u) GROUPID=$$(id -g) docker compose exec php \

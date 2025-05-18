@@ -1,0 +1,23 @@
+
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+.btn:focus,.btn:active {
+    outline: none !important;
+    box-shadow: none;
+}
+
+.loader {
+    position: fixed;
+    left: 50%;
+    right: 50%;
+    top: 30%;
+    margin-left: -2rem;
+    z-index: 100;
+}
