@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Subtitles</title>
-    <link href="/css/app.css" rel="stylesheet">
+    <link href="/dist/assets/app.css" rel="stylesheet">
+    <link href="/dist/assets/app2.css" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -16,18 +17,12 @@
     <meta name="theme-color" content="#ffffff">
 </head>
 <body>
-
     <div class="container">
-
         <div id="app">
-
             @yield('content')
-
         </div>
-
     </div>
 
-    <script src="/js/app.js"></script>
-
+    <script type="module" src="/dist/assets/app2.js"></script>
 </body>
 </html>

@@ -61,35 +61,6 @@ phpstan: ## Run phpstan
 				subtitles-php \
 				bash -c "composer phpstan"
 
-.PHONY: vue-serve
-vue-serve: ## Run vue-cli-service serve
-	@echo -e "\033[33mvue-serve\033[0m"
-	@docker run --rm \
-				-t \
-				-p 8080:8080 \
-				--volume $(HOME)/.cache:/home/docker/.cache:delegated \
-				--volume $(HOME)/.npm:/home/docker/.npm:delegated \
-				--volume $(PWD):/app:delegated \
-				--env USERID=$$(id -u) \
-				--env GROUPID=$$(id -g) \
-				--name subtitles-node-runtime \
-				subtitles-node \
-				bash -c "npm run serve"
-
-.PHONY: vue-build
-vue-build: ## Run vue-cli-service build
-	@echo -e "\033[33mvue-build\033[0m"
-	@docker run --rm \
-				-t \
-				--volume $(HOME)/.cache:/home/docker/.cache:delegated \
-				--volume $(HOME)/.npm:/home/docker/.npm:delegated \
-				--volume $(PWD):/app:delegated \
-				--env USERID=$$(id -u) \
-				--env GROUPID=$$(id -g) \
-				--name subtitles-node-runtime \
-				subtitles-node \
-				bash -c "npm run build"
-
 .PHONY: npm-install
 npm-install: ## Run npm install
 	@echo -e "\033[33mnpm-install\033[0m"
@@ -103,3 +74,31 @@ npm-install: ## Run npm install
 				--name subtitles-node-runtime \
 				subtitles-node \
 				bash -c "npm install"
+
+.PHONY: npm-dev
+npm-dev: ## Run vite
+	@echo -e "\033[33mnpm-dev\033[0m"
+	@docker run --rm \
+				-t \
+				--volume $(HOME)/.cache:/home/docker/.cache:delegated \
+				--volume $(HOME)/.npm:/home/docker/.npm:delegated \
+				--volume $(PWD):/app:delegated \
+				--env USERID=$$(id -u) \
+				--env GROUPID=$$(id -g) \
+				--name subtitles-node-runtime \
+				subtitles-node \
+				bash -c "npm run dev"
+
+.PHONY: npm-build
+npm-build: ## Run vite build
+	@echo -e "\033[33mnpm-build\033[0m"
+	@docker run --rm \
+				-t \
+				--volume $(HOME)/.cache:/home/docker/.cache:delegated \
+				--volume $(HOME)/.npm:/home/docker/.npm:delegated \
+				--volume $(PWD):/app:delegated \
+				--env USERID=$$(id -u) \
+				--env GROUPID=$$(id -g) \
+				--name subtitles-node-runtime \
+				subtitles-node \
+				bash -c "npm run build"

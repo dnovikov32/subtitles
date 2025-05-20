@@ -43,7 +43,21 @@ Install composer dependencies:
 docker exec -it subtitles-php php artisan migrate
 ```
 
-npm install
+Install node dependencies:
+```bash
+make npm-install
+```
+
+Run vite dev:
+```bash
+make npm-dev
+```
+
+Run vite build:
+```bash
+make npm-build
+```
+
 
 ## Laravel CLI
 ```bash 

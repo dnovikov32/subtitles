@@ -1,29 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Status;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Benlipp\SrtParser\Parser;
 use App\Http\Controllers\Controller;
 use App\Models\Film;
 use App\Models\Language;
 use App\Models\Subtitle;
 use App\Models\Row;
 
-class FilmsController extends Controller
+final class FilmsController extends Controller
 {
-    /**
-     * @return Film[]
-     */
-    public function index()
+    public function index(): array
     {
-        $films = Film::with('subtitle')
+        $films = Film::query()
+            ->with('subtitle')
             ->has('subtitle')
             ->get();
 
-        $serials = Film::whereHas('subtitles', function ($query) {
+        $serials = Film::query()
+            ->whereHas('subtitles', function (Builder $query) {
                 $query
                     ->where('season', '!=', 0)
                     ->where('episode', '!=', 0);
@@ -36,19 +36,12 @@ class FilmsController extends Controller
         ];
     }
 
-    /**
-     * @param integer $id|null
-     * @return Film
-     */
-    public function find($id)
+    public function find(string $id): Film
     {
         /* @var Film $film */
-        $film = Film::with('subtitles')->find($id);
-
-        if (! $film) {
-            $film = new Film();
-            $film->title = null;
-        }
+        $film = Film::query()
+            ->with('subtitles')
+            ->findOrFail($id);
 
         return $film;
     }

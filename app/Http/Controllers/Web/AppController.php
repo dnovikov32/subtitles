@@ -10,7 +10,6 @@ final class AppController
 {
     public function index(): View
     {
-        dd('123');
         return view('spa.index');
     }
 }
