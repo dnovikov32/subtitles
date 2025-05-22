@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import { fileURLToPath, URL } from 'node:url'
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
 import vue from '@vitejs/plugin-vue';
@@ -6,7 +7,8 @@ import vue from '@vitejs/plugin-vue';
 export default defineConfig({
     resolve: {
         alias: {
-            vue: '@vue/compat'
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+            vue: '@vue/compat',
         }
     },
     build: {
@@ -19,11 +21,6 @@ export default defineConfig({
             }
         }
     },
-    server: {
-        hmr: {
-            host: 'subtitles.test',
-        },
-    },
     plugins: [
         laravel({
             input: [
@@ -32,7 +29,6 @@ export default defineConfig({
             ],
             refresh: true,
         }),
-        // vue(),
         vue({
             template: {
                 compilerOptions: {

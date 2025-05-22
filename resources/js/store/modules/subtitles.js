@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import axios from '../../axios';
 
 export default {
     namespaced: true,
@@ -35,9 +35,8 @@ export default {
     },
 
     actions: {
-
         show ({state, commit, rootState}, id) {
-            return Vue.axios.get(`/api/v1/subtitles/show/${id}`)
+            return axios.get(`/api/v1/subtitles/show/${id}`)
                 .then(
                     response => commit('SHOW_SUBTITLE_SUCCESS', response.data),
                     error => {}
@@ -45,7 +44,7 @@ export default {
         },
 
         find ({state, commit, rootState}, id) {
-            return Vue.axios.get(`/api/v1/subtitles/find/${id}`)
+            return axios.get(`/api/v1/subtitles/find/${id}`)
                 .then(
                     response => commit('FIND_SUBTITLE_SUCCESS', response.data),
                     error => {}
@@ -53,7 +52,7 @@ export default {
         },
 
         update ({state, commit, rootState}, model) {
-            return Vue.axios.post('/api/v1/subtitles/update', model)
+            return axios.post('/api/v1/subtitles/update', model)
                 .then(
                     response => commit('UPDATE_SUBTITLE_SUCCESS', response.data),
                     error => {}
@@ -61,12 +60,11 @@ export default {
         },
 
         destroy ({state, commit, rootState}, id) {
-            return Vue.axios.post('/api/v1/subtitles/destroy', {id: id})
+            return axios.post('/api/v1/subtitles/destroy', {id: id})
                 .then(
                     response => commit('DESTROY_SUBTITLE_SUCCESS', response.data),
                     error => {}
                 )
         }
-
     }
 };

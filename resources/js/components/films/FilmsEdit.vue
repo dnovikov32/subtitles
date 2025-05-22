@@ -115,6 +115,8 @@
 </template>
 
 <script>
+    import each from 'lodash/each';
+
     export default {
 
         data () {
@@ -162,7 +164,7 @@
                     files: files,
                 };
 
-                _.each(this.languages, function (lang) {
+                each(this.languages, function (lang) {
                     files.push({
                         file: null,
                         lang: lang.name,
@@ -183,7 +185,7 @@
                 form.append('subtitle[season]', this.subtitle.season);
                 form.append('subtitle[episode]', this.subtitle.episode);
 
-                _.each(this.subtitle.files, function (file) {
+                each(this.subtitle.files, function (file) {
                     form.append(`${file.lang}`, file.file);
                 });
 

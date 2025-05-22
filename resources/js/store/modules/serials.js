@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import axios from '../../axios';
 
 export default {
     namespaced: true,
@@ -22,7 +22,7 @@ export default {
     actions: {
 
         show ({state, commit, rootState}, id) {
-            return Vue.axios.get(`/api/v1/serials/show/${id}`)
+            return axios.get(`/api/v1/serials/show/${id}`)
                 .then(
                     response => commit('SHOW_SERIAL_SUCCESS', response.data),
                     error => {}

@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import axios from '../../axios';
 
 export default {
     namespaced: true,
@@ -40,7 +40,7 @@ export default {
 
     actions: {
         all ({state, commit, rootState}) {
-            return Vue.axios.get('/api/v1/films/index')
+            return axios.get('/api/v1/films/index')
                 .then(
                     response => commit('ALL_FILMS_SUCCESS', response.data),
                     error => {}
@@ -48,7 +48,7 @@ export default {
         },
 
         find ({state, commit, rootState}, id) {
-            return Vue.axios.get(`/api/v1/films/find/${id}`)
+            return axios.get(`/api/v1/films/find/${id}`)
                 .then(
                     response => commit('FIND_FILM_SUCCESS', response.data),
                     error => {}
@@ -56,7 +56,7 @@ export default {
         },
 
         edit ({state, commit, rootState}, model) {
-            return Vue.axios.post('/api/v1/films/edit', model)
+            return axios.post('/api/v1/films/edit', model)
                 .then(
                     response => commit('CREATE_FILM_SUCCESS', response.data),
                     error => {}
@@ -64,7 +64,7 @@ export default {
         },
 
         destroy ({state, commit, rootState}, id) {
-            return Vue.axios.post('/api/v1/films/destroy', {id: id})
+            return axios.post('/api/v1/films/destroy', {id: id})
                 .then(
                     response => commit('DESTROY_FILM_SUCCESS', response.data),
                     error => {}

@@ -44,24 +44,7 @@ export default new Vuex.Store({
 
         failing ({state, commit, rootState}, errors) {
             commit('SET_ERRORS', errors);
-
-            // let messages = [];
-            //
-            // if (typeof errors.message !== 'undefined') {
-            //     messages.push(errors.message);
-            // } else {
-            //     errors.map(function (value) {
-            //         messages.push(value.message);
-            //     });
-            // }
-
-            // messages.map(function (value) {
-            //     Vue.notify({type: 'error', text: value});
-            // });
-            //
-            // return messages;
         }
-
     },
 
     modules: {

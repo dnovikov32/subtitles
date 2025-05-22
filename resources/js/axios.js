@@ -1,4 +1,5 @@
 import Axios from 'axios'
+import store from './store'
 
 const axios = Axios.create();
 
@@ -16,14 +17,14 @@ axios.interceptors.request.use(
             console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
         }
 
-        window.app.$store.dispatch('loading', true);
-        window.app.$store.dispatch('failing', []);
+        store.dispatch('loading', true);
+        store.dispatch('failing', []);
 
         return config;
     },
     error => {
-        window.app.$store.dispatch('loading', false);
-        window.app.$store.dispatch('failing', error.response.data);
+        store.dispatch('loading', false);
+        store.dispatch('failing', error.response.data);
 
         return Promise.reject(error);
     }
@@ -31,14 +32,14 @@ axios.interceptors.request.use(
 
 axios.interceptors.response.use(
     response => {
-        window.app.$store.dispatch('loading', false);
-        window.app.$store.dispatch('failing', []);
+        store.dispatch('loading', false);
+        store.dispatch('failing', []);
 
         return response;
     },
     error => {
-        window.app.$store.dispatch('loading', false);
-        window.app.$store.dispatch('failing', error.response.data);
+        store.dispatch('loading', false);
+        store.dispatch('failing', error.response.data);
 
         return Promise.reject(error);
     }

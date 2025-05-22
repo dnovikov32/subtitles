@@ -79,6 +79,7 @@ npm-install: ## Run npm install
 npm-dev: ## Run vite
 	@echo -e "\033[33mnpm-dev\033[0m"
 	@docker run --rm \
+				-i \
 				-t \
 				--volume $(HOME)/.cache:/home/docker/.cache:delegated \
 				--volume $(HOME)/.npm:/home/docker/.npm:delegated \
@@ -102,3 +103,19 @@ npm-build: ## Run vite build
 				--name subtitles-node-runtime \
 				subtitles-node \
 				bash -c "npm run build"
+
+.PHONY: npm-watch
+npm-watch: ## Run vite build --watch
+	@echo -e "\033[33mnpm-watch\033[0m"
+	@docker run --rm \
+				-i \
+				-t \
+				--init \
+				--volume $(HOME)/.cache:/home/docker/.cache:delegated \
+				--volume $(HOME)/.npm:/home/docker/.npm:delegated \
+				--volume $(PWD):/app:delegated \
+				--env USERID=$$(id -u) \
+				--env GROUPID=$$(id -g) \
+				--name subtitles-node-runtime \
+				subtitles-node \
+				bash -c "npm run watch"
