@@ -1,30 +1,20 @@
 <template>
-
     <div class="row">
-
         <div class="col-12 mb-3">
-
             <div class="loader" v-if="isLoading">
                 <b-spinner variant="primary" label="Spinning"></b-spinner>
             </div>
-
             <h4>{{ film.id ? 'Update film' : 'Create film' }}</h4>
-
         </div>
 
         <div class="col-8">
-
             <b-form id="form" @submit="save">
-
                 <h5>Common</h5>
-
                 <b-card class="mb-3">
-
                     <b-form-group
                         label="Title"
                         label-for="title"
-                        label-cols-sm="2"
-                    >
+                        label-cols-sm="2">
                         <b-form-input
                             id="title"
                             type="text"
@@ -32,13 +22,10 @@
                             required
                             trim />
                     </b-form-group>
-
                 </b-card>
 
                 <div class="mb-3">
-
                     <h5>Add subtitles</h5>
-
                     <b-card class="mb-3">
 
                         <b-form-group label="Title" label-cols-sm="3">
@@ -74,7 +61,6 @@
                         </b-form-group>
 
                     </b-card>
-
                 </div>
 
                 <b-button type="submit" variant="primary" :disabled="isLoading">
@@ -85,8 +71,7 @@
                       class="ml-2"
                       :disabled="isLoading"
                       @click="destroy"
-                      title="Delete film"
-                >
+                      title="Delete film">
                     <i class="fa fa-trash"></i> Delete
                 </b-button>
 
@@ -143,13 +128,19 @@
 
         created () {
             this.subtitle = this.newSubtitle();
-            this.$store.dispatch('films/find', this.$route.params.id || 0);
+
+            if (this.$route.params.id) {
+                this.$store.dispatch('films/find', this.$route.params.id);
+            }
         },
 
         watch: {
             '$route': function () {
                 this.subtitle = this.newSubtitle();
-                this.$store.dispatch('films/find', this.$route.params.id || 0);
+
+                if (this.$route.params.id) {
+                    this.$store.dispatch('films/find', this.$route.params.id);
+                }
             }
         },
 
