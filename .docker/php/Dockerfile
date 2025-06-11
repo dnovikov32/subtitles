@@ -40,8 +40,6 @@ RUN apt install -y \
 
 RUN docker-php-ext-configure gd --with-jpeg=/usr/include --with-freetype=/usr/include
 
-RUN pecl install grpc && docker-php-ext-enable grpc
-
 RUN docker-php-ext-install -j$(nproc) \
     bcmath \
     ctype \

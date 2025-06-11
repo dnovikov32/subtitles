@@ -1,5 +1,4 @@
 {
-  "$schema": "https://getcomposer.org/schema.json",
   "name": "dnovikov32/subtitles",
   "type": "project",
   "license": "MIT",
