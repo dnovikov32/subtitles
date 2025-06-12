@@ -13,9 +13,8 @@ use App\Models\Film;
 use App\Models\Subtitle;
 use App\Models\Row;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Routing\Controller;
 
-final class FilmsController extends Controller
+final class FilmsController
 {
     public function index(): array
     {
@@ -119,7 +118,7 @@ final class FilmsController extends Controller
 
     public function destroy(Request $request): array
     {
-        Film::find($request->id)->delete();
+        Film::query()->findOrFail((int) $request->get('id'))->delete();
 
         return ['status' => 'success'];
     }
@@ -146,8 +145,4 @@ final class FilmsController extends Controller
 
         return $count2;
     }
-
-
-
-
 }

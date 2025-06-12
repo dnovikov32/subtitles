@@ -50,7 +50,7 @@
 
                     <td>
                         <div v-text="row.position" class="position"></div>
-                        <div v-text="row.startTimeFormatted" class="time"></div>
+                        <div v-text="row.startTime" class="time"></div>
                     </td>
 
                     <td class="col">

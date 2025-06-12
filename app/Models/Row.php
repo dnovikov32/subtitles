@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -14,17 +15,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $start
  * @property string $end
  * @property integer $position
+ *
+ * @method static Builder|static query()
  */
 final class Row extends Model
 {
-    public function toArray(): array
-    {
-        return [
-            'text1' => $this->text1,
-            'text2' => $this->text2,
-            'position' => $this->position,
-            'startTimeFormatted' => \DateTime::createFromFormat('Y-m-d H:i:s', $this->start)->format(),
-            'status' => 0
-        ];
-    }
+
 }

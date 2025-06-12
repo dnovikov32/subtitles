@@ -39,7 +39,7 @@
 
                     <td class="col">
                         <div v-if="en[index]">
-                            <div class="time">{{ en[index].startTimeFormatted }}</div>
+                            <div class="time">{{ en[index].startTime }}</div>
                             <div class="text" v-text="en[index].text" @blur="changeText($event, 'en', index)" contenteditable></div>
 
                             <div class="ctrl">
@@ -52,7 +52,7 @@
                     <td class="col">
                         <div v-if="ru[index]">
 
-                            <div class="time">{{ ru[index].startTimeFormatted }}</div>
+                            <div class="time">{{ ru[index].startTime }}</div>
 
                             <div class="text" v-text="ru[index].text" @blur="changeText($event, 'ru', index)" contenteditable></div>
 

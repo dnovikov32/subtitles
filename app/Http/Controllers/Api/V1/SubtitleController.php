@@ -1,25 +1,28 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Language;
 use App\Models\Subtitle;
 use App\Models\Row;
 
-class SubtitleController
+final class SubtitleController
 {
-    public function show($id)
+    public function show(string $id): Subtitle
     {
-        $subtitle = Subtitle::with(['film', 'rows'])->find($id);
+        $subtitle = Subtitle::query()
+            ->with(['film', 'rows'])
+            ->findOrFail((int) $id);
 
         return $subtitle;
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): array
     {
-        Subtitle::find($request->id)->delete();
+        Subtitle::query()->findOrFail((int) $request->get('id'))->delete();
 
         return ['status' => 'success'];
     }
@@ -100,14 +103,12 @@ class SubtitleController
             $result[Language::LANG_EN][$index] = [
                 'text' => $row->text1,
                 'startTime' => $row->start,
-                'startTimeFormatted' => gmdate('H:i:s', $row->start),
                 'endTime' => $row->end,
             ];
 
             $result[Language::LANG_RU][$index] = [
                 'text' => $row->text2,
                 'startTime' => $row->start,
-                'startTimeFormatted' => gmdate('H:i:s', $row->start),
                 'endTime' => $row->end,
             ];
         }

@@ -13,10 +13,10 @@ Route::group(['prefix' => 'api/v1'], function() {
 
         Route::get('/serials/show/{id}', [\App\Http\Controllers\Api\V1\SerialsController::class, 'show']);
 
-        Route::get('/subtitles/show/{id}', 'SubtitleController@show');
-        Route::get('/subtitles/find/{id}', 'SubtitleController@find');
-        Route::post('/subtitles/update', 'SubtitleController@update');
-        Route::post('/subtitles/destroy', 'SubtitleController@destroy');
+        Route::get('/subtitles/show/{id}', [\App\Http\Controllers\Api\V1\SubtitleController::class, 'show']);
+        Route::get('/subtitles/find/{id}', [\App\Http\Controllers\Api\V1\SubtitleController::class, 'find']);
+        Route::post('/subtitles/update', [\App\Http\Controllers\Api\V1\SubtitleController::class, 'update']);
+        Route::post('/subtitles/destroy', [\App\Http\Controllers\Api\V1\SubtitleController::class, 'destroy']);
     });
 });
 

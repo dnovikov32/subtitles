@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Row;
-use App\Models\Film;
 
 /**
  * @property integer $id
@@ -16,7 +15,9 @@ use App\Models\Film;
  * @property integer $episode
  * @property integer status
  *
- * @property Row[] $rows
+ * @property-read Row[] $rows
+ *
+ * @method static Builder|static query()
  */
 final class Subtitle extends Model
 {
