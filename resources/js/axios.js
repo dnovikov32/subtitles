@@ -6,7 +6,7 @@ const axios = Axios.create();
 axios.interceptors.request.use(
     config => {
         config.headers['X-Requested-With'] = 'XMLHttpRequest';
-        config.headers['Content-Type'] = 'application/json';
+        // config.headers['Content-Type'] = 'application/json';
         // config.headers.post['Content-Type'] = 'multipart/form-data';
 
         let csrf = document.head.querySelector('meta[name="csrf-token"]');

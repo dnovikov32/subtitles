@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Status;
+use Benlipp\SrtParser\Exceptions\FileNotFoundException;
+use Benlipp\SrtParser\Parser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\Film;
-use App\Models\Language;
 use App\Models\Subtitle;
 use App\Models\Row;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Routing\Controller;
 
 final class FilmsController extends Controller
 {
@@ -38,7 +40,6 @@ final class FilmsController extends Controller
 
     public function find(string $id): Film
     {
-        /* @var Film $film */
         $film = Film::query()
             ->with('subtitles')
             ->findOrFail($id);
@@ -46,44 +47,39 @@ final class FilmsController extends Controller
         return $film;
     }
 
-    /**
-     * @param integer $id
-     * @return Film
-     */
-    public function show($id)
+    public function show(int $id): Film
     {
-        /* @var Film $film */
-        $film = Film::with(['subtitles' => function ($query) {
-            $query->where('season')->with('rows');
-        }])->find($id);
+        $film = Film::query()
+            ->with(['subtitles' => function ($query) {
+                $query->where('season')->with('rows');
+            }])
+            ->findOrFail($id);
 
         return $film;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     * @param Request $request
-     * @return Film
-     */
-    public function edit(Request $request)
+    public function edit(Request $request): Film
     {
-        $film = Film::find($request->input('film.id'));
+        $film = Film::query()->find((int) $request->input('film.id'));
 
-        if (! $film) {
+        if (!$film) {
             $film = new Film();
         }
 
         $film->title = $request->input('film.title');
+
         $film->save();
 
-        $file1 = $request->file(Language::LANG_EN);
-        $file2 = $request->file(Language::LANG_RU);
+        $ruFile = $request->file('subtitle.enFile');
+        $enFile = $request->file('subtitle.ruFile');
 
-        if ($file1 && $file2) {
-            $season = (int)$request->input('subtitle.season');
+
+        if ($ruFile && $enFile) {
+            $season = (int) $request->input('subtitle.season');
             $episode = (int) $request->input('subtitle.episode');
 
-            Subtitle::where('film_id', $film->id)
+            Subtitle::query()
+                ->where('film_id', $film->id)
                 ->where('season', $season)
                 ->where('episode', $episode)
                 ->delete();
@@ -97,23 +93,23 @@ final class FilmsController extends Controller
 
             $subtitle->save();
 
-            $subs1 = $this->parseFile($file1);
-            $subs2 = $this->parseFile($file2);
-            $maxLength = $this->getMaxLength($subs1, $subs2);
-            $data = [];
+            $ruSubs = $this->parseFile($ruFile);
+            $enSubs = $this->parseFile($enFile);
+            $maxLength = $this->getMaxLength($ruSubs, $enSubs);
+            $rows = [];
 
             for ($i = 0; $i < $maxLength; $i++) {
-                $data[] = [
+                $rows[] = [
                     'subtitle_id' => $subtitle->id,
-                    'text1' => isset($subs1[$i]->text) ? strip_tags($subs1[$i]->text) : '',
-                    'text2' => isset($subs2[$i]->text) ? strip_tags($subs2[$i]->text) : '',
-                    'start' => $subs1[$i]->startTime ?? $subs2[$i]->startTime ?? '',
-                    'end' => $subs1[$i]->endTime ?? $subs2[$i]->endTime ?? '',
+                    'text1' => isset($ruSubs[$i]->text) ? strip_tags($ruSubs[$i]->text) : '',
+                    'text2' => isset($enSubs[$i]->text) ? strip_tags($enSubs[$i]->text) : '',
+                    'start' => $ruSubs[$i]->startTime ?? $enSubs[$i]->startTime ?? '',
+                    'end' => $ruSubs[$i]->endTime ?? $enSubs[$i]->endTime ?? '',
                     'position' => $i
                 ];
             }
 
-            Row::insert($data);
+            Row::query()->insert($rows);
         }
 
         $film->load('subtitles');
@@ -121,20 +117,17 @@ final class FilmsController extends Controller
         return $film;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @param Request $request
-     * @return array
-     */
-    public function destroy(Request $request)
+    public function destroy(Request $request): array
     {
         Film::find($request->id)->delete();
 
         return ['status' => 'success'];
     }
 
-
-    private function parseFile($file)
+    /**
+     * @throws FileNotFoundException
+     */
+    private function parseFile(UploadedFile $file): array
     {
         $parser = new Parser();
         $parser->loadFile($file->getRealPath());
@@ -142,7 +135,7 @@ final class FilmsController extends Controller
         return $parser->parse();
     }
 
-    private function getMaxLength($subs1, $subs2)
+    private function getMaxLength($subs1, $subs2): int
     {
         $count1 = count($subs1);
         $count2 = count($subs2);

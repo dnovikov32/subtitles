@@ -52,11 +52,16 @@
                             </div>
                         </div>
 
-                        <b-form-group v-for="(file, fileIndex) in subtitle.files" :key="fileIndex">
+                        <b-form-group>
                             <b-form-file
-                                v-model="file.file"
+                                v-model="subtitle.enFile"
                                 accept=".srt"
-                                :placeholder="file.text">
+                                placeholder="English">
+                            </b-form-file>
+                            <b-form-file
+                                v-model="subtitle.ruFile"
+                                accept=".srt"
+                                placeholder="Russian">
                             </b-form-file>
                         </b-form-group>
 
@@ -100,16 +105,10 @@
 </template>
 
 <script>
-    import each from 'lodash/each';
-
     export default {
 
         data () {
             return {
-                languages: [
-                    {value: 1, text: 'English', name: 'en'},
-                    {value: 2, text: 'Russian', name: 'ru'}
-                ],
                 subtitle: {}
             }
         },
@@ -146,24 +145,13 @@
 
         methods: {
             newSubtitle () {
-                let files = [];
-
-                let subtitle = {
+                return {
                     title: '',
                     season: 0,
                     episode: 0,
-                    files: files,
+                    enFile: null,
+                    ruFile: null
                 };
-
-                each(this.languages, function (lang) {
-                    files.push({
-                        file: null,
-                        lang: lang.name,
-                        text: lang.text
-                    });
-                });
-
-                 return subtitle;
             },
 
             createForm () {
@@ -175,10 +163,8 @@
                 form.append('subtitle[title]', this.subtitle.title);
                 form.append('subtitle[season]', this.subtitle.season);
                 form.append('subtitle[episode]', this.subtitle.episode);
-
-                each(this.subtitle.files, function (file) {
-                    form.append(`${file.lang}`, file.file);
-                });
+                form.append('subtitle[enFile]', this.subtitle.enFile);
+                form.append('subtitle[ruFile]', this.subtitle.ruFile);
 
                 return form;
             },
@@ -193,10 +179,13 @@
 
                     this.$notify({ type: 'success', text: 'Film saved'});
 
-                    this.$router.push({ name: 'films.update', params: { id: this.film.id } });
+                    this.$router.push({
+                        name: 'films.update',
+                        params: { id: this.film.id }
+                    });
+
                     this.subtitle = this.newSubtitle();
                 });
-
             },
 
             destroy () {
