@@ -191,7 +191,7 @@
                         return false;
                     }
 
-                    this.$notify({type: 'success', text: 'Film saved'});
+                    this.$notify({ type: 'success', text: 'Film saved'});
 
                     this.$router.push({ name: 'films.update', params: { id: this.film.id } });
                     this.subtitle = this.newSubtitle();
@@ -205,7 +205,7 @@
                 }
 
                 this.$store.dispatch('films/destroy', this.film.id).then(() => {
-                    this.$notify({type: 'success', text: 'Film was delete'});
+                    this.$notify({ type: 'success', text: 'Film was delete' });
                     this.$router.push({ name: 'films.index'});
                 });
             }
